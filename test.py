@@ -3,7 +3,7 @@ import messenger
 import time
 import os
 
-dir_path = os.getcwd()
+
 librus = Librus.Librus()
 chat = messenger.Chat()
 librus.log_in_librus('Login', 'Password')
