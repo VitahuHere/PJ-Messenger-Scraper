@@ -55,7 +55,8 @@ class Librus(object):
     def messages(self):
         inbox = []
         self.driver.get('https://synergia.librus.pl/wiadomosci')
-        message_table = self.driver.find_element_by_xpath('//*[@id="formWiadomosci"]/div/div/table/tbody/tr/td[2]/table[2]/tbody')
+        message_table = self.driver.find_element_by_xpath('//*[@id="formWiadomosci"]/div/div/table/tbody/tr/ \
+        td[2]/table[2]/tbody')
         num = message_table.find_elements_by_xpath("//td[@style='font-weight: bold;']")
         if len(num) == 0:
             return "No new messages"

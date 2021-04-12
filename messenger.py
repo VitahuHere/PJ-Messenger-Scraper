@@ -64,7 +64,9 @@ class Chat:
         if self._driver.current_url != url:
             self._driver.get(url)
         WebDriverWait(self._driver, 10).until(ec.presence_of_element_located((By.CLASS_NAME, "_5rp7")))
-        self._driver.find_element_by_xpath('/html/body/div[1]/div/div[1]/div/div[2]/div/div/div[1]/div[1]/div[2]/div/div/div/div/div/div[1]/div[2]/div/div/div/div[2]/div/form/div/div[3]/div[2]/div[1]/div/div/div/div/div[2]/div/div/div/div').send_keys(self.message, Keys.RETURN)
+        self._driver.find_element_by_xpath('/html/body/div[1]/div/div[1]/div/div[2]/div/div/div[1]/div[1]/ \
+        div[2]/div/div/div/div/div/div[1]/div[2]/div/div/div/div[2]/div/form/div/div[3]/div[2]/div[1]/div/ \
+        div/div/div/div[2]/div/div/div/div').send_keys(self.message, Keys.RETURN)
 
     def send_picture(self, thread, picture, login, password):
         try:
@@ -79,11 +81,17 @@ class Chat:
         url = self._base_url + 't/' + self.thread
         if self._driver.current_url != url:
             self._driver.get(url)
-        WebDriverWait(self._driver, 10).until(ec.presence_of_element_located((By.XPATH, "/html/body/div[1]/div/div[1]/div/div[2]/div/div/div[1]/div[1]/div[2]/div/div/div/div/div/div/div[2]/div/div/div/div[2]/div/form/div/div[3]/div[1]/input")))
-        upload_picture = self._driver.find_element_by_xpath('/html/body/div[1]/div/div[1]/div/div[2]/div/div/div[1]/div[1]/div[2]/div/div/div/div/div/div/div[2]/div/div/div/div[2]/div/form/div/div[3]/div[1]/input')
+        WebDriverWait(self._driver, 10).until(ec.presence_of_element_located((By.XPATH, "/html/body/div[1] \
+        /div/div[1]/div/div[2]/div/div/div[1]/div[1]/div[2]/div/div/div/div/div/div/div[2]/div/div/div/ \
+        div[2]/div/form/div/div[3]/div[1]/input")))
+        upload_picture = self._driver.find_element_by_xpath('/html/body/div[1]/div/div[1]/div/div[2]/ \
+        div/div/div[1]/div[1]/div[2]/div/div/div/div/div/div/div[2]/div/div/div/div[2]/div/form/div/ \
+        div[3]/div[1]/input')
         upload_picture.send_keys(self.picture)
         time.sleep(2)
-        self._driver.find_element_by_xpath('/html/body/div[1]/div/div[1]/div/div[2]/div/div/div[1]/div[1]/div[2]/div/div/div/div/div/div[1]/div[2]/div/div/div/div[2]/div/form/div/div[3]/div[2]/div[1]/div/div/div/div/div[2]/div/div/div/div').send_keys(Keys.RETURN)
+        self._driver.find_element_by_xpath('/html/body/div[1]/div/div[1]/div/div[2]/div/div/div[1]/ \
+        div[1]/div[2]/div/div/div/div/div/div[1]/div[2]/div/div/div/div[2]/div/form/div/div[3]/div[2] \
+        /div[1]/div/div/div/div/div[2]/div/div/div/div').send_keys(Keys.RETURN)
 
     def exit(self):
         self._driver.quit()
