@@ -2,7 +2,7 @@
 Send messages and pictures to Messenger website using Selenium
 
 ## Initial checks
-- Check if msedgedriver.exe is the same version as your Microsoft Edge browser. Current is V.89
+- Check if msedgedriver.exe is the same version as your Microsoft Edge browser. Current is V.89. 
 If not, download correct version from [Microsoft site.](https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver/)
 - Check if using Python 3
 
