@@ -2,8 +2,11 @@
 Send messages and pictures to Messenger website using Selenium
 
 ## Initial checks
-- Check if msedgedriver.exe is the same version as your Microsoft Edge browser. Current is V.89.  
-If not, download correct version from [Microsoft site.](https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver/)
+- Check if msedgedriver.exe is the same version as your Microsoft Edge browser.   
+  - Open your Edge browser
+  - Paste ```edge://settings/help``` in search bar
+  - Check first 2 digits of browser version   
+If your browser version is different that 89, then download mathcing version from [Microsoft site.](https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver/)
 - Check if using Python 3
 
 ## Installing
@@ -49,7 +52,7 @@ chat.exit()
 
 # Please use exit() method to remove background processes
 While Messenger Chat is running, it creates a lot of processes that can stay in the background.
-CMD command should also do the job.
+CMD command to remove all background processes.
 ```
 taskkill /IM msedgedriver.exe /F /T
 ```
