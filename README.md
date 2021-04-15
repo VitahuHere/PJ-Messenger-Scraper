@@ -51,7 +51,7 @@ chat.exit()
 > Password123
 
 # Please use exit() method to remove background processes
-While Messenger Chat is running, it creates a lot of processes that can stay in the background.
+While Messenger Chat is running, it creates a lot of processes that can stay in the background.   
 CMD command to remove all background processes.
 ```
 taskkill /IM msedgedriver.exe /F /T
