@@ -1,6 +1,5 @@
 import messenger
 import time
-import os
 
 
 chat = messenger.Chat()
