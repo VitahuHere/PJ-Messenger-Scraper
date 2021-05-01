@@ -29,9 +29,9 @@ chat.exit()
 > 123456789 **or** 123456789/
 - path to file - path to picture on your PC 
 > C:\Users\PC\Desktop\picture.png
-- mail - your email or login to  Facebook/Messenger
+- mail - your email or login to  Messenger
 > example@mail
-- password - your password to Facebook/Messenger
+- password - your password to Messenger
 > Password123
 
 ### Sending text message
