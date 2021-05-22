@@ -29,7 +29,7 @@ chat.exit()
 - path to file - path to picture on your PC 
 > C:\Users\PC\Desktop\picture.png
 - mail - your email or login to  Messenger
-> example@mail
+> example@mail,com
 - password - your password to Messenger
 > Password123
 
