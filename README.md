@@ -28,7 +28,7 @@ chat.send_image('path_to_file': str, conversation_thread: str | int)
 ### Sending text message
 send_message() method
 ```
-chat = messenger.Chat()
+chat = fbchat.Chat()
 chat.send_message('conversation thread', 'message')
 ```
 - conversation thread - numbers after messenger.com/t/
@@ -38,7 +38,7 @@ chat.send_message('conversation thread', 'message')
 
 ### Chaining methods
 ```
-messenger.Chat(email, pass)
+fbchat.Chat(email, pass)
 .send_message('conversation thread', 'message')
 .send_image('path_to_file', 'conversation_thread')
 ```
