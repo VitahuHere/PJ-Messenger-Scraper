@@ -2,17 +2,28 @@ import atexit
 import base64
 import os.path
 import pickle
+import time
 
 from selenium import webdriver
-from selenium.common import NoSuchElementException
+from selenium.common import NoSuchElementException, TimeoutException
 from selenium.webdriver import Keys
 from selenium.webdriver.chrome.service import Service as ChromeService
-from selenium.webdriver.chrome.webdriver import WebDriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from webdriver_manager.chrome import ChromeDriverManager
 
-from consts import TIMEOUT, COOKIES, SENT_SVG, TEXT_BOX, DECLINE_COOKIES, EMAIL_ID, PASS_ID, IMAGE_BOX
+from consts import (
+    TIMEOUT,
+    COOKIES,
+    SENT_SVG,
+    TEXT_BOX,
+    DECLINE_COOKIES,
+    EMAIL_ID,
+    PASS_ID,
+    IMAGE_BOX,
+    MESSAGE_ROW,
+    DELIVERED_SVG,
+)
 
 
 class Facebook:
@@ -47,9 +58,7 @@ class Facebook:
         self.driver.get(self.root)
         self._wait_till_loaded()
         try:
-            self.driver.find_element(
-                By.CSS_SELECTOR, f'[{DECLINE_COOKIES}]'
-            ).click()
+            self.driver.find_element(By.CSS_SELECTOR, f"[{DECLINE_COOKIES}]").click()
         except NoSuchElementException:
             pass
 
@@ -62,25 +71,50 @@ class Facebook:
         self.driver.find_element(By.ID, PASS_ID).send_keys(Keys.RETURN)
 
     def _get_conv(self, recipient: str | int):
-        self.driver.get(f"{self.root}messages/t/{recipient}")
+        if self.driver.current_url != f"{self.root}messages/t/{recipient}":
+            self.driver.get(f"{self.root}messages/t/{recipient}")
+
         WebDriverWait(self.driver, timeout=TIMEOUT).until(
-            lambda d: d.find_element(By.CSS_SELECTOR, f'{TEXT_BOX}')
+            lambda _: self.driver.find_element(By.CSS_SELECTOR, f"[{TEXT_BOX}]")
         )
+
+    def _wait_till_message_sent(self):
+        end_time = time.monotonic() + float(TIMEOUT)
+        while True:
+            try:
+                rows = self.driver.find_elements(By.CSS_SELECTOR, f"[{MESSAGE_ROW}]")
+                last_row = rows[-1]
+                last_row.find_element(By.CSS_SELECTOR, f"[{DELIVERED_SVG}]")
+                return
+            except NoSuchElementException:
+                try:
+                    rows = self.driver.find_elements(
+                        By.CSS_SELECTOR, f"[{MESSAGE_ROW}]"
+                    )
+                    last_row = rows[-1]
+                    last_row.find_element(By.CSS_SELECTOR, f"[{SENT_SVG}]")
+                    return
+                except NoSuchElementException:
+                    pass
+
+            time.sleep(0.5)
+            if time.monotonic() > end_time:
+                break
+        raise TimeoutException()
 
     def send_message(self, message: str, recipient: str | int) -> "Facebook":
         self._get_conv(recipient)
-        text_box = self.driver.find_element(By.CSS_SELECTOR, f'[{TEXT_BOX}]')
+        text_box = self.driver.find_element(By.CSS_SELECTOR, f"[{TEXT_BOX}]")
         text_box.send_keys(message)
         text_box.send_keys(Keys.RETURN)
-        element = self.driver.find_element(By.XPATH, f'//*[contains(text(), "{message}")]')
-        svg: WebDriver = element.parent
-        WebDriverWait(self.driver, timeout=TIMEOUT).until(lambda _: svg.find_element(By.CSS_SELECTOR, f'[{SENT_SVG}]'))
+        self._wait_till_message_sent()
         return self
 
     def send_image(self, image_path: str, recipient: str | int) -> "Facebook":
         self._get_conv(recipient)
-        text_box = self.driver.find_element(By.CSS_SELECTOR, f'[{IMAGE_BOX}]')
-        text_box.click()
-        text_box.send_keys(image_path)
+        image_box = self.driver.find_element(By.CSS_SELECTOR, f"[{IMAGE_BOX}]")
+        image_box.send_keys(image_path)
+        text_box = self.driver.find_element(By.CSS_SELECTOR, f"[{TEXT_BOX}]")
         text_box.send_keys(Keys.RETURN)
+        self._wait_till_message_sent()
         return self
