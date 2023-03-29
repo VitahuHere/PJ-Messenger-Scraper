@@ -35,14 +35,14 @@ class Facebook:
         self._load_cookies(email, password)
         atexit.register(self._dump_cookies)
 
-    def _wait_till_loaded(self):
+    def _wait_till_loaded(self) -> None:
         while self.driver.execute_script("return document.readyState") != "complete":
             return
 
-    def _dump_cookies(self):
+    def _dump_cookies(self) -> None:
         pickle.dump(self.driver.get_cookies(), open(COOKIES, "wb"))
 
-    def _load_cookies(self, email: str, password: str):
+    def _load_cookies(self, email: str, password: str) -> None:
         self.driver.get(self.root)
         self._wait_till_loaded()
 
@@ -54,7 +54,7 @@ class Facebook:
         else:
             self._login(email, password)
 
-    def _login(self, email: str, password: str):
+    def _login(self, email: str, password: str) -> None:
         self.driver.get(self.root)
         self._wait_till_loaded()
         try:
@@ -70,29 +70,28 @@ class Facebook:
         )
         self.driver.find_element(By.ID, PASS_ID).send_keys(Keys.RETURN)
 
-    def _get_conv(self, recipient: str | int):
+    def _get_conv(self, recipient: str | int) -> None:
         if self.driver.current_url != f"{self.root}messages/t/{recipient}":
             self.driver.get(f"{self.root}messages/t/{recipient}")
 
-        WebDriverWait(self.driver, timeout=TIMEOUT).until(
-            lambda _: self.driver.find_element(By.CSS_SELECTOR, f"[{TEXT_BOX}]")
-        )
+            WebDriverWait(self.driver, timeout=TIMEOUT).until(
+                lambda _: self.driver.find_element(By.CSS_SELECTOR, f"[{TEXT_BOX}]")
+            )
 
-    def _wait_till_message_sent(self):
+    def _get_last_row(self, tag: str) -> None:
+        rows = self.driver.find_elements(By.CSS_SELECTOR, f"[{MESSAGE_ROW}]")
+        last_row = rows[-1]
+        last_row.find_element(By.CSS_SELECTOR, f"[{tag}]")
+
+    def _wait_till_message_sent(self) -> None:
         end_time = time.monotonic() + float(TIMEOUT)
         while True:
             try:
-                rows = self.driver.find_elements(By.CSS_SELECTOR, f"[{MESSAGE_ROW}]")
-                last_row = rows[-1]
-                last_row.find_element(By.CSS_SELECTOR, f"[{DELIVERED_SVG}]")
+                self._get_last_row(DELIVERED_SVG)
                 return
             except NoSuchElementException:
                 try:
-                    rows = self.driver.find_elements(
-                        By.CSS_SELECTOR, f"[{MESSAGE_ROW}]"
-                    )
-                    last_row = rows[-1]
-                    last_row.find_element(By.CSS_SELECTOR, f"[{SENT_SVG}]")
+                    self._get_last_row(SENT_SVG)
                     return
                 except NoSuchElementException:
                     pass
@@ -102,7 +101,20 @@ class Facebook:
                 break
         raise TimeoutException()
 
-    def send_message(self, message: str, recipient: str | int) -> "Facebook":
+    def send_message(
+        self, message: str | list, recipient: str | int, separate_messages: bool = True
+    ) -> "Facebook":
+        if not all(isinstance(msg, str) for msg in message):
+            raise ValueError("Message should be a string or list of strings")
+
+        if isinstance(message, list):
+            if separate_messages:
+                for msg in message:
+                    self.send_message(msg, recipient)
+                return self
+            else:
+                message = " ".join(message)
+
         self._get_conv(recipient)
         text_box = self.driver.find_element(By.CSS_SELECTOR, f"[{TEXT_BOX}]")
         text_box.send_keys(message)
@@ -111,6 +123,9 @@ class Facebook:
         return self
 
     def send_image(self, image_path: str, recipient: str | int) -> "Facebook":
+        if not os.path.exists(image_path):
+            raise FileNotFoundError(f"File {image_path} does not exist")
+
         self._get_conv(recipient)
         image_box = self.driver.find_element(By.CSS_SELECTOR, f"[{IMAGE_BOX}]")
         image_box.send_keys(image_path)
