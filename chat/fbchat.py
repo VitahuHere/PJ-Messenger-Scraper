@@ -1,3 +1,6 @@
+__author__ = "Cong Minh Vu"
+__version__ = "1.0.0"
+
 import os.path
 import time
 
