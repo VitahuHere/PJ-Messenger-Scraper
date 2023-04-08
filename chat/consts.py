@@ -1,3 +1,8 @@
+__author__ = "Cong Minh Vu"
+__version__ = "1.0.0"
+__license__ = "GNU General Public License v3.0"
+
+
 import os
 from pathlib import Path
 
@@ -26,4 +31,13 @@ class FacebookConsts:
 
 
 class PJConsts:
-    ...
+    LOGIN_ID = "ContentPlaceHolder1_Login1_UserName"
+    PASS_ID = "ContentPlaceHolder1_Login1_Password"
+    SCHEDULE_TABLE_CLASS = "rsContentTable"
+    SCHEDULE_ROW_TAG = "tr"
+    SCHEDULE_CELL_TAG = "td"
+    CELL_WITH_CLASS = (
+        'id^="ctl00_ContentPlaceHolder1_DedykowanyPlanStudenta_PlanZajecRadScheduler"'
+    )
+    REMOTE_COLOR = "rgb(58, 235, 52)"
+    QUARTER_PADDING = "top: 12px"

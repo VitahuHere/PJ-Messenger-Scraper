@@ -1,10 +1,12 @@
 __author__ = "Cong Minh Vu"
 __version__ = "1.0.0"
+__license__ = "GNU General Public License v3.0"
 
 
 from selenium.webdriver import Keys
 from selenium.webdriver.common.by import By
 
+from consts import PJConsts
 from scraper import BaseScraper
 from utils import get_base64_string
 
@@ -25,15 +27,9 @@ class PJScraper(BaseScraper):
     def _login(self, student_id: str, password: str) -> None:
         self._driver.get(self._root + "/Logowanie.aspx")
         self._wait_till_loaded()
-        self._driver.find_element(
-            By.ID, "ContentPlaceHolder1_Login1_UserName"
-        ).send_keys(student_id)
-        self._driver.find_element(
-            By.ID, "ContentPlaceHolder1_Login1_Password"
-        ).send_keys(password)
-        self._driver.find_element(
-            By.ID, "ContentPlaceHolder1_Login1_Password"
-        ).send_keys(Keys.RETURN)
+        self._driver.find_element(By.ID, PJConsts.LOGIN_ID).send_keys(student_id)
+        self._driver.find_element(By.ID, PJConsts.PASS_ID).send_keys(password)
+        self._driver.find_element(By.ID, PJConsts.PASS_ID).send_keys(Keys.RETURN)
         self._wait_till_loaded()
         if self._driver.current_url != self._root + "/TwojPlan.aspx":
             raise Exception("Wrong credentials")
@@ -55,8 +51,8 @@ class PJScraper(BaseScraper):
 
         self._driver.get(self._root + "/TwojPlan.aspx")
         self._wait_till_loaded()
-        table = self._driver.find_element(By.CLASS_NAME, "rsContentTable")
-        rows = table.find_elements(By.TAG_NAME, "tr")
+        table = self._driver.find_element(By.CLASS_NAME, PJConsts.SCHEDULE_TABLE_CLASS)
+        rows = table.find_elements(By.TAG_NAME, PJConsts.SCHEDULE_ROW_TAG)
         week_day_name = {
             0: "Monday",
             1: "Tuesday",
@@ -72,15 +68,15 @@ class PJScraper(BaseScraper):
             half = False
             hour = 6
             for row in rows:
-                cells = row.find_elements(By.TAG_NAME, "td")
+                cells = row.find_elements(By.TAG_NAME, PJConsts.SCHEDULE_CELL_TAG)
                 for cell in cells[i : i + 1]:
                     if cell.text.strip() != "":
                         div = cell.find_element(
                             By.CSS_SELECTOR,
-                            '[id^="ctl00_ContentPlaceHolder1_DedykowanyPlanStudenta_PlanZajecRadScheduler"]',
+                            f"[{PJConsts.CELL_WITH_CLASS}]",
                         )
                         class_name = cell.text.strip()
-                        if "top: 12px" in div.get_attribute("style"):
+                        if PJConsts.QUARTER_PADDING in div.get_attribute("style"):
                             subjects[week_day_name[i]][class_name] = {
                                 "start": f"{hour}:{'45' if half else '15'}",
                                 "end": f"{hour+2 if half else hour+1}:{'15' if half else '45'}",
@@ -93,7 +89,7 @@ class PJScraper(BaseScraper):
 
                         subjects[week_day_name[i]][class_name][
                             "remotely"
-                        ] = "rgb(58, 235, 52)" in div.get_attribute("style")
+                        ] = PJConsts.REMOTE_COLOR in div.get_attribute("style")
                 if half:
                     hour += 1
                 half = not half

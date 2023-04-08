@@ -1,3 +1,8 @@
+__author__ = "Cong Minh Vu"
+__version__ = "1.0.0"
+__license__ = "GNU General Public License v3.0"
+
+
 import base64
 
 from decouple import config
@@ -25,7 +30,9 @@ for key, value in scraper.items():
         continue
     sublist = [key]
     for k, v in value.items():
-        sublist.append(f"{k} {v['start']}-{v['end']}{', remotely' if v['remotely'] else ''}")
+        sublist.append(
+            f"{k} {v['start']}-{v['end']}{', remotely' if v['remotely'] else ''}"
+        )
     mess.append(sublist)
 
 config.encoding = "utf-8"

@@ -1,5 +1,6 @@
 __author__ = "Cong Minh Vu"
 __version__ = "1.0.0"
+__license__ = "GNU General Public License v3.0"
 
 
 import atexit
