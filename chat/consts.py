@@ -4,7 +4,7 @@ from pathlib import Path
 ROOT_DIR = Path(__file__).parent.parent
 
 TIMEOUT = 15
-COOKIES = str(os.path.join(ROOT_DIR, ".wdm", "cookies.pkl"))
+COOKIES = str(os.path.join(ROOT_DIR, ".wdm", "cookies"))
 CRED_CACHE_DIR = str(os.path.join(ROOT_DIR, ".wdm"))
 
 
