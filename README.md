@@ -71,18 +71,59 @@ accepts 1 argument - day of the week as number \
 1 - Tuesday \
 2 - Wednesday \
 ... \
-6 - Sunday \
+6 - Sunday
 
-returns a dict of classes for given day
+#### Returns
+If day of the week is provided, returns
+dict with name of the day of the week as key
+and dict with classes as value
+
 ```python
 {
-    "MUL ćwiczenia A215": {
-        "start": "10:15",
-        "end": "11:45",
+    "Monday": {
+        "MUL ćwiczenia A215": {
+            "start": "10:15",
+            "end": "11:45",
+        },
+        "ASD wykład A1": {
+            "start": "12:15",
+            "end": "13:45",
+        },
     },
-    "ASD wykład A1": {
-        "start": "12:15",
-        "end": "13:45",
+}
+```
+
+If no argument is provided, returns dict with all classes
+```python
+{
+    "Monday": {
+        "MUL ćwiczenia A215": {
+            "start": "10:15",
+            "end": "11:45",
+            "remotely": False,
+        },
+        "ASD wykład A1": {
+            "start": "12:15",
+            "end": "13:45",
+            "remotely": False,
+        },
     },
+    "Tuesday": {},
+    "Wednesday": {
+        "JAP4lek ćwiczenia s. H307": {
+            "start": "12:15",
+            "end": "13:45",
+            "remotely": True,
+        },
+        "APBD wykład A1": {
+            "start": "14:00",
+            "end": "15:30",
+            "remotely": True,
+        },
+    },
+    "Thursday": {},
+    "Friday": {},
+    "Saturday": {},
+    "Sunday": {},
 }
 ```
