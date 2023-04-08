@@ -7,8 +7,8 @@ import base64
 
 from decouple import config
 
-from chat import FacebookScraper
-from scrapers import PJScraper
+from scrapers import FacebookScraper, PJScraper
+
 
 scraper = PJScraper(
     student_id=base64.b64encode(config("PJ_ID").encode("utf-8")).decode("utf-8"),
@@ -41,4 +41,4 @@ password = base64.b64encode(config("FB_PASS").encode("utf-8")).decode("utf-8")
 
 messenger = FacebookScraper(email, password)
 for m in mess:
-    messenger.send_message(m, 1000)
+    messenger.send_message(m, config("CONVERSATION_ID"), False)

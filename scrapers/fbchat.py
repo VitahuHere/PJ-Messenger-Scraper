@@ -11,7 +11,7 @@ from selenium.webdriver import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 
-from chat.consts import FacebookConsts, TIMEOUT
+from scrapers.consts import FacebookConsts, TIMEOUT
 from scrapers.scraper import BaseScraper
 from utils import get_base64_string
 
