@@ -34,4 +34,4 @@ password = base64.b64encode(config("FB_PASS").encode("utf-8")).decode("utf-8")
 
 messenger = FacebookScraper(email, password)
 for m in mess:
-    messenger.send_message(m, 100010793111874)
+    messenger.send_message(m, 1000)

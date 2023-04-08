@@ -1,3 +1,7 @@
+__author__ = "Cong Minh Vu"
+__version__ = "1.0.0"
+
+
 from selenium.webdriver import Keys
 from selenium.webdriver.common.by import By
 

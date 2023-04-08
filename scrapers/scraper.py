@@ -1,3 +1,7 @@
+__author__ = "Cong Minh Vu"
+__version__ = "1.0.0"
+
+
 import atexit
 import hashlib
 import os
