@@ -13,7 +13,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
 from webdriver_manager.chrome import ChromeDriverManager
 
-from consts import ROOT_DIR, COOKIES, CRED_CACHE_DIR
+from scrapers.consts import ROOT_DIR, COOKIES, CRED_CACHE_DIR
 
 
 class BaseScraper:

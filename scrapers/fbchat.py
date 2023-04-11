@@ -13,7 +13,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 
 from scrapers.consts import FacebookConsts, TIMEOUT
 from scrapers.scraper import BaseScraper
-from utils import get_base64_string
+from scrapers.utils import get_base64_string
 
 
 class FacebookScraper(BaseScraper):

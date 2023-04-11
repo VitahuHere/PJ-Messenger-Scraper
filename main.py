@@ -2,17 +2,17 @@ __author__ = "Cong Minh Vu"
 __version__ = "1.0.0"
 __license__ = "GNU General Public License v3.0"
 
-
-import base64
-
 from decouple import config
 
 from scrapers import FacebookScraper, PJScraper
 
 
+config.encoding = "utf-8"
+
+
 scraper = PJScraper(
-    student_id=base64.b64encode(config("PJ_ID").encode("utf-8")).decode("utf-8"),
-    password=base64.b64encode(config("PJ_PASS").encode("utf-8")).decode("utf-8"),
+    student_id=config("PJ_ID"),
+    password=config("PJ_PASS"),
 ).get_classes_schedule()
 
 mess = []
@@ -35,9 +35,8 @@ for key, value in scraper.items():
         )
     mess.append(sublist)
 
-config.encoding = "utf-8"
-email = base64.b64encode(config("FB_EMAIL").encode("utf-8")).decode("utf-8")
-password = base64.b64encode(config("FB_PASS").encode("utf-8")).decode("utf-8")
+email = config("FB_EMAIL")
+password = config("FB_PASS")
 
 messenger = FacebookScraper(email, password)
 for m in mess:

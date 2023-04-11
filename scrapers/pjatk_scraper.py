@@ -6,9 +6,9 @@ __license__ = "GNU General Public License v3.0"
 from selenium.webdriver import Keys
 from selenium.webdriver.common.by import By
 
-from consts import PJConsts
-from scraper import BaseScraper
-from utils import get_base64_string
+from scrapers.consts import PJConsts
+from scrapers.scraper import BaseScraper
+from scrapers.utils import get_base64_string
 
 
 class PJScraper(BaseScraper):
