@@ -13,7 +13,7 @@ pip install -r requirements.txt
 ## Notice
 For security reasons, credentials are base64 encoded.\
 Additionally, you can use .env file to store credentials. \
-In this project python-decouple is used to load .env file.\
+In this project python-decouple is used to load .env file.
 
 ## Usage
 Facebook Messenger Chat has 1 class\
